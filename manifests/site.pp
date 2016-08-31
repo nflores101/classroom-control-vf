@@ -56,5 +56,5 @@ node default {
      # creates => '/etc/motd',
     #  }
       
-      include shh
+      include users
 }
