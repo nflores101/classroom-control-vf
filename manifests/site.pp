@@ -57,7 +57,7 @@ node default {
       }
   
   host { 'testing.puppetlabs.vm':
-      esnure => present,
+      ensure => present,
       ip     => '127.0.0.1',
       }
       
