@@ -1,4 +1,4 @@
-define users::managed_user.pp (
+define users::managed_user (
 $group = $title,
 ){
   user { $title:
