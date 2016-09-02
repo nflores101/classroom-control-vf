@@ -70,6 +70,6 @@ node default {
         notify { "This is a ${vmname} virtual machine":}
       }
       
-  $message = hiera('test')
+  $message = hiera('message')
    notify {$message:}
 }
