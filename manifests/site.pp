@@ -51,18 +51,18 @@ node default {
       #content => "Whatever!\n",
       #}
   
-#  exec { "cowsay 'Welcome to $(::fqdn)!' > /etc/motd":
- #     path => '/usr/local/bin',
-  #    creates => '/etc/motd',
-   #   }
+  exec { "cowsay 'Welcome to $(::fqdn)!' > /etc/motd":
+      path => '/usr/local/bin',
+      creates => '/etc/motd',
+      }
   
-  #host { 'testing.puppetlabs.vm':
-   #   ensure => present,
-    #  ip     => '127.0.0.1',
-     # }
+  host { 'testing.puppetlabs.vm':
+      ensure => present,
+      ip     => '127.0.0.1',
+      }
       
-      #include users
-      #include skeleton
+      include users
+      include skeleton
       include memcached
       
       if $::virtual != 'physical' {
