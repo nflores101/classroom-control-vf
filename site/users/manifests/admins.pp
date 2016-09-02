@@ -4,8 +4,9 @@ class users::admins {
     group => 'staff',
   }
  users::managed_user {'Aaron':
+    group => 'staff',
   }
- group { 'staff:'
+ group { 'staff':
  ensure  => present,
  }
 }
