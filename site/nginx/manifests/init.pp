@@ -1,12 +1,13 @@
-class nginx ( 
+class nginx (
   $root = undef,
-){
+) {
   case $::osfamily {
     'redhat','debian' : {
       $package = 'nginx'
       $owner   = 'root'
       $group   = 'root'
-      $docroot = '/var/www'
+      #$docroot = '/var/www'
+      $default_docroot = '/var/www'
       $confdir = '/etc/nginx'
       $logdir  = '/var/log/nginx'
     }
@@ -14,7 +15,8 @@ class nginx (
       $package = 'nginx-service'
       $owner   = 'Administrator'
       $group   = 'Administrators'
-      $docroot = 'C:/ProgramData/nginx/html'
+      #$docroot = 'C:/ProgramData/nginx/html'
+      $default_docroot = 'C:/ProgramData/nginx/html'
       $confdir = 'C:/ProgramData/nginx'
       $logdir  = 'C:/ProgramData/nginx/logs'
     }
@@ -23,6 +25,11 @@ class nginx (
     }
   }
 
+  $docroot = $root ? {
+    undef   => $default_docroot,
+    default => $root,
+  }
+  
   # user the service will run as. Used in the nginx.conf.erb template
   $user = $::osfamily ? {
     'redhat'  => 'nginx',
@@ -41,7 +48,8 @@ class nginx (
   }
 
   file { [ $docroot, "${confdir}/conf.d" ]:
-    ensure => directory,
+    ensure  => directory,
+    require => Package['nginx'],
   }
 
   file { "${docroot}/index.html":
@@ -51,11 +59,13 @@ class nginx (
   file { "${confdir}/nginx.conf":
     ensure  => file,
     content => template('nginx/nginx.conf.erb'),
+    require => Package['nginx'],
     notify  => Service['nginx'],
   }
   file { "${confdir}/conf.d/default.conf":
     ensure  => file,
     content => template('nginx/default.conf.erb'),
+    require => Package['nginx'],
     notify  => Service['nginx'],
   }
 
