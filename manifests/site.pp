@@ -72,4 +72,7 @@ node default {
       
   $message = hiera('comment')
    notify {$message:}
+   
+  include nginx
+  
 }
